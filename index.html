@@ -1,0 +1,44 @@
+<html>
+<head>
+<title>Intro</title>
+<center>
+<script src="SETUP/processing-1.4.1.js"></script>
+<script type="text/processing" data-processing-target="mycanvas">
+/* @pjs globalKeyEvents = "true"; */
+//intro page
+PImage frogger;
+
+
+void setup ()
+{
+	size(500,500);
+	frameRate(60);
+	orator = loadFont("Orator Std");
+	frogger = loadImage("IMAGE/frogger.jpg");
+}
+
+void draw ()
+{
+	background(0,0,0);
+	fill(255,255,255);
+	text("insert image here",200,80);
+	textFont(orator,32);
+	text("Frogger",180,330);
+	textFont(orator,16);
+	text("Press any button to start",140,400);
+	image(frogger,100,50,300,200);
+}
+
+void keyPressed()
+{
+	link("mainMenu.html");
+}
+
+</script>
+<canvas id="mycanvas"></canvas>
+</head>
+
+<body>
+
+</body>
+</html>

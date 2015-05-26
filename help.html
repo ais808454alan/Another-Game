@@ -1,0 +1,46 @@
+<html>
+<head>
+<title>Help</title>
+<center>
+<script src="SETUP/processing-1.4.1.js"></script>
+<script type="text/processing" data-processing-target="mycanvas">
+/* @pjs globalKeyEvents = "true"; */
+
+//intro page
+
+void setup ()
+{
+	size(500,500);
+	frameRate(60);
+	orator = loadFont("Orator Std");
+}
+
+void draw ()
+{
+	background(0,0,0);
+	fill(255,255,255);
+	textFont(orator,32);
+	text("Use the wasd to make",50,50);
+	text("the frog move.",50,100);
+	text("Help frogs to reach",50,150);
+	text("the land.",50,200);
+	text("Try to get 1,000 points",50,250);
+	text("to win the game!",50,300);	
+	textFont(orator,16);
+	text("Press any key to return main manu",50,450);
+	
+	if (keyPressed == true)
+
+	{
+		link("mainMenu.html");
+	}
+}
+
+</script>
+<canvas id="mycanvas"></canvas>
+</head>
+
+<body>
+
+</body>
+</html>

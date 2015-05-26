@@ -1,0 +1,957 @@
+<html>
+<head>
+<title>FROGGER 2.0 </title>
+<script type="text/javascript" src="SOUND/script/soundmanager2.js"></script>
+<script type="text/javascript" src="SOUND/script/loadsoundchrome.js"></script>
+<center>
+<script src="SETUP/processing-1.4.1.js"></script>
+<script type="text/processing" data-processing-target="mycanvas">
+
+/* @pjs globalKeyEvents = "true"; */
+
+int SCORE;
+int LIVES;
+int LEVEL;
+int frogy = 700;
+int line;
+int a;
+int b;
+
+int frogHorizontal;
+int frogVertical;
+
+boolean death1;
+boolean death2;
+boolean death3;
+
+int object[] = new int[8];
+int speed[] = new int[8];
+
+int log1121;
+int log1122;
+int log91;
+int log92;
+int log93;
+
+int flower1011;
+int flower1012;
+int flower1021;
+int flower1022;
+int flower811;
+int flower812;
+int flower813;
+int flower821;
+int flower822;
+int flower823;
+int flower831;
+int flower832;
+int flower833;
+
+PImage death;
+PImage log;
+PImage car;
+
+PImage frogUp[] = new PImage [4];
+PImage frogDown[] = new PImage [4];
+PImage frogRight[] = new PImage [4];
+PImage frogLeft[] = new PImage [4];
+
+int startTr;
+int endTr;
+int timeR;
+int startTu;
+int endTu;
+int timeU;
+int startTd;
+int endTd;
+int timeD;
+int startTl;
+int endTl;
+int timeL;
+int frogHorizontalstop;
+//max
+boolean music;
+boolean dying;
+int MUSIC;
+int DYING;
+
+boolean UP;
+boolean DOWN;
+boolean LEFT;
+boolean	RIGHT;
+
+int end;
+int speedRun;
+
+void setup ()
+{
+	size(800,800);
+	frameRate(60);
+	
+	orator = loadFont("Orator Std");
+	
+	death        = loadImage("IMAGE/death.jpg");
+	log = loadImage("IMAGE/log.png");
+	car = loadImage("IMAGE/car.png");
+	line = 0;
+	
+	SCORE = (int)sessionStorage.transferx2;
+	LIVES = (int)sessionStorage.transferx1;
+	speedRun = (int)sessionStorage.transferx3;
+	LEVEL = 3;
+	
+	frogHorizontal = 350;
+	frogVertical   = 750;
+	
+	death1 = false;
+	death2 = false;
+	death3 = false;
+	
+	object1x = -50;
+	object2x = 800;
+	object3x = -50;
+	object4x = 800;	
+	object5x = -50;
+	object6x = 800;
+	
+	log1121 = 50;
+	log1122 = 450;
+	log91 = 50;
+	log92 = 290;
+	log93 = 530;
+	
+	flower1011 = 75;
+	flower1012 = 125;
+	flower1021 = 475;
+	flower1022 = 525;
+	flower811 = 75;
+	flower812 = 125;
+	flower813 = 175;
+	flower821 = 315;
+	flower822 = 365;
+	flower823 = 415;
+	flower831 = 555;
+	flower832 = 605;
+	flower833 = 655;
+
+	n=1;
+	while (n <= 4)
+	{
+		frogUp[n] = loadImage("IMAGE/frog up/up"+n+".png");
+		n = n + 1;
+	}
+	n=1;
+	while (n <= 4)
+	{
+		frogDown[n] = loadImage("IMAGE/frog down/down"+n+".png");
+		n = n + 1;
+	}
+	n=1;
+	while (n <= 4)
+	{
+		frogLeft[n] = loadImage("IMAGE/frog left/left"+n+".png");
+		n = n + 1;
+	}
+	n=1;
+	while (n <= 4)
+	{
+		frogRight[n] = loadImage("IMAGE/frog right/right"+n+".png");
+		n = n + 1;
+	}
+	frogHorizontalstop=0;
+	time = 0;
+	
+	//max
+	music =	true;
+	dying = false;
+	MUSIC = 1;
+	DYING = 100;
+
+	UP    = true;
+	DOWN  = false;
+	LEFT  = false;
+	RIGHT = false;
+	
+	end = 75;
+	
+	//speed setting
+	x = 1;
+	while(x<=6)
+	{
+		speed[x] = random(3,10);
+		x = x+1;
+	}
+}	
+
+void draw ()
+{
+	background(0,0,0);
+	
+	if (music == true)
+		{
+			soundManager.play('s1');
+			MUSIC = MUSIC - 1;
+			
+			if (MUSIC < 1)
+				{
+					music = false;
+				}	
+		}
+
+	max();	
+	jack();
+	frogMOVEMENT();
+	
+	
+		if(frogVertical == frogy)
+		{
+			SCORE += 10;
+			frogy -= 50;
+		}
+		
+}	
+	
+void max()
+{
+//death
+			if (death1 == true)
+		{
+			if(death1 == true && LIVES == 3)
+			{
+				SCORE = 0;
+				frogy =700;
+			}
+			LIVES = 2;	
+		}
+	 if (death2 == true)
+	 	{
+	 		if(death2 == true && LIVES == 2)
+	 		{
+	 			SCORE = 0;
+	 			frogy = 700;
+	 		}
+	 		LIVES = 1;
+	 	}
+	 if (death3 == true)
+	 	{	
+	 		if(death3 == true && LIVES == 1)
+	 		{
+	 			SCORE = 0;
+	 			frogy = 700;
+	 		}
+	 		LIVES = 0;
+	 	}
+	
+//setting lines
+	line = 0;
+	a = 750;
+	b = 0;
+	while(b<=10)
+	{
+		if(frogVertical == a)
+		{
+			line = b;
+		}
+		a = a-50;
+		b = b+1;
+	}
+		
+//movement limiters
+	if (frogVertical < 150)
+		{
+			frogVertical = 150;
+		}
+	if (frogVertical > 750)
+		{
+			frogVertical = 750;
+		}
+	if (frogHorizontal < 0)
+		{
+			frogHorizontal = 0;
+		}
+	if (frogHorizontal > 750)
+		{
+			frogHorizontal = 750;
+		}
+		
+	
+//TOP ROW TEXT
+	fill(255,255,255);
+	textFont(orator,40);
+	text("SCORE " + SCORE,45,45);
+	text("LEVEL " + LEVEL,295,45);
+	text("LIVES " + LIVES,520,45);
+	text("TIME " +  speedRun,295,75);
+	speedRun = speedRun +1; 
+//text(frogVertical,600,100);
+
+//starting zone	
+	fill(255,0,255);
+	rect(-5,750,810,50);
+
+		//line 6
+	fill(76,0,153);
+	rect(0,400,800,50);
+
+//squares
+	x = 1;
+	while(x<=6)
+	{
+		if(x%2 == 1)
+		{
+			image(car,object[x],750-50*x,50,50);
+		}
+		else
+		{
+			image(car,object[x],750-50*x,50,50);
+		}
+		x = x+1;
+	}
+	
+
+
+			
+//===========-------------------------------------------------------------------------		
+if (dying == false)
+{
+///fifth square movement
+		x = 1;
+		while(x<=6)
+		{
+			if(x%2 == 1)
+			{
+				if(object[x] >= -50 && object[x] < 800)
+				{
+					object[x] = object[x] + speed[x];
+				}
+			
+				if(object[x] >=800)
+				{
+					object[x] = -50;
+				}
+			}
+			else
+			{
+				if (object[x] <= 800 && object[x] > -50)
+				{
+					object[x] = object[x] - speed[x];
+				}
+	
+				if (object[x] <= -50)
+				{
+					object[x] = 800;
+				}
+			}
+			x = x+1;
+		}
+		DYING = 100;
+
+//collision
+	x = line;
+	if (frogHorizontal > object[x] - 49 && frogHorizontal < object[x] + 50 && line == x)
+		{	
+			if (LIVES == 3)
+				{
+					death1 = true;
+					death2 = false;
+					death3 = false;
+				}
+			if (LIVES == 2)
+				{
+					death1 = false;
+					death2 = true;
+					death3 = false;
+				}
+			if (LIVES == 1)
+				{
+					death1 = false;
+					death2 = false;
+					death3 = true;
+				}
+			soundManager.play('s2');	
+			dying = true;
+		}
+}
+//-------------------------------------------------------------------------------------
+}
+
+void jack()			
+{			
+
+	//lines
+	if (frogVertical == 400)
+		{
+			line = 7;
+		}
+	if (frogVertical == 350)
+		{
+			line = 8;
+		}
+	if (frogVertical == 300)
+		{
+			line = 9;
+		}
+	if (frogVertical == 250)
+		{
+			line = 10;
+		}
+	if (frogVertical == 200)
+		{
+			line = 11;
+		}
+	if(frogVertical == 150)
+		{
+			line = 12;
+		}
+
+	//line 12
+	fill(0,204,102);
+	rect(0,100,800,100);
+	fill(0,0,0);
+	text("GOAL",350,175);	
+	
+	//line 9&11
+	
+	
+	//line 9&11 limiters
+	if (log1121 > 800)
+		{
+			log1121 = 0;
+		}
+		
+	if (log1122 > 800)
+		{
+			log1122 = 0;
+		}	
+
+	if (log91 > 800)
+		{
+			log91 = 0;
+		}	
+		
+	if (log92 > 800)
+		{
+			log92 = 0;
+		}
+		
+	if (log93 > 800)
+		{
+			log93 = 0;
+		}	
+		
+	//line 9&11
+	fill(153,76,0);
+	image(log,log1121,200,160,50);
+	image(log,log1122,200,160,50);
+	
+	image(log,log91,300,160,50);
+	image(log,log92,300,160,50);
+	image(log,log93,300160,50);
+	
+	//line 8&10
+	fill(0,153,0);
+	
+	ellipse(flower1011,275,50,50);
+	ellipse(flower1012,275,50,50);
+	ellipse(flower1021,275,50,50);
+	ellipse(flower1022,275,50,50);
+	
+	
+	
+		//line 10 limiters
+		if (flower1011<-100)
+			{
+				flower1011 = 800;
+			}
+		if (flower1012<-100)
+			{
+				flower1012 = 800;
+			}
+		if (flower1021<-100)
+			{
+				flower1021 = 800;
+			}
+		if (flower1022<-100)
+			{
+				flower1022 = 800;
+			}
+	
+	
+	ellipse(flower811,375,50,50);
+	ellipse(flower812,375,50,50);
+	ellipse(flower813,375,50,50);
+	ellipse(flower821,375,50,50);
+	ellipse(flower822,375,50,50);
+	ellipse(flower823,375,50,50);	
+	ellipse(flower831,375,50,50);
+	ellipse(flower832,375,50,50);
+	ellipse(flower833,375,50,50);	
+	
+	
+	
+		//line 8 limiters
+		if (flower811<-150)
+			{
+				flower811 = 800;
+			}
+		if (flower812<-150)
+			{
+				flower812 = 800;
+			}
+		if (flower813<-150)
+			{
+				flower813 = 800;
+			}
+		if (flower821<-150)
+			{
+				flower821 = 800;
+			}
+		if (flower822<-150)
+			{
+				flower822 = 800;
+			}
+		if (flower823<-150)
+			{
+				flower823 = 800;
+			}
+		if (flower831<-150)
+			{
+				flower831 = 800;
+			}
+		if (flower832<-150)
+			{
+					flower832 = 800;
+			}
+		if (flower833<-150)
+			{
+				flower833 = 800;
+			}
+
+	//line 7
+	fill(76,0,153);
+	rect(0,400,800,50);
+	
+if(dying == false)
+{	
+	//line movements
+	flower811 = flower811 - 2;
+	flower812 = flower812 - 2;
+	flower813 = flower813 - 2;
+	flower821 = flower821 - 2;
+	flower822 = flower822 - 2;
+	flower823 = flower823 - 2;
+	flower831 = flower831 - 2;
+	flower832 = flower832 - 2;
+	flower833 = flower833 - 2;
+	
+	flower1011 = flower1011 - 5;
+	flower1012 = flower1012 - 5;
+	flower1021 = flower1021 - 5;
+	flower1022 = flower1022 - 5;
+	
+	log1121 = log1121+5;
+	log1122 = log1122+5;
+	log91 = log91+2;
+	log92 = log92+2;
+	log93 = log93+2;
+	
+	//! : reversing logic
+
+	//collision line 8
+	if(line==8)
+	{
+		//if frog is not on the flower, frog dies
+		if(!((flower811-50<frogHorizontal && frogHorizontal<flower813+50) || (flower821-50<frogHorizontal && frogHorizontal<flower823+50) || (flower831-50<frogHorizontal && frogHorizontal<flower833+50)))
+		{
+			if (LIVES == 3)
+				{
+					death1 = true;
+					death2 = false;
+					death3 = false;
+				}
+			if (LIVES == 2)
+				{
+					death1 = false;
+					death2 = true;
+					death3 = false;
+				}
+			if (LIVES == 1)
+				{
+					death1 = false;
+					death2 = false;
+					death3 = true;
+				}
+			soundManager.play('s2');	
+			dying = true;
+		}
+			
+	}
+	
+	//collision line9
+	if(line==9)
+	{
+		if(!((log91-105<frogHorizontal && frogHorizontal<log91+105) || (log92-105<frogHorizontal && frogHorizontal<log92+105) || (log93-105<frogHorizontal && frogHorizontal<log93+105)))
+		{
+			if (LIVES == 3)
+				{
+					death1 = true;
+					death2 = false;
+					death3 = false;
+				}
+			if (LIVES == 2)
+				{
+					death1 = false;
+					death2 = true;
+					death3 = false;
+				}
+			if (LIVES == 1)
+				{
+					death1 = false;
+					death2 = false;
+					death3 = true;
+				}
+			soundManager.play('s2');	
+			dying = true;
+		}
+			
+	}
+	
+	//collision line 10
+	if(line==10)
+	{
+		if(!((flower1011-75<frogHorizontal && frogHorizontal<flower1012+75) || (flower1021-75<frogHorizontal && frogHorizontal<flower1022+75)))
+		{
+			if (LIVES == 3)
+				{
+					death1 = true;
+					death2 = false;
+					death3 = false;
+				}
+			if (LIVES == 2)
+				{
+					death1 = false;
+					death2 = true;
+					death3 = false;
+				}
+			if (LIVES == 1)
+				{
+					death1 = false;
+					death2 = false;
+					death3 = true;
+				}
+			soundManager.play('s2');	
+			dying = true;
+		}
+			
+	}
+
+	
+	
+	//collision line 11
+	if(line==11)
+	{
+		if(!((log1121-105<frogHorizontal && frogHorizontal<log1121+105) || (log1122-105<frogHorizontal && frogHorizontal<log1122+105)))
+		{
+			
+		
+			if (LIVES == 3)
+				{
+					death1 = true;
+					death2 = false;
+					death3 = false;
+				}
+			if (LIVES == 2)
+				{
+					death1 = false;
+					death2 = true;
+					death3 = false;
+				}
+			if (LIVES == 1)
+				{
+					death1 = false;
+					death2 = false;
+					death3 = true;
+				}
+			soundManager.play('s2');	
+			dying = true;
+		}		
+	}
+	
+	//line 12
+	if(line == 12)
+	{	
+		if (end == 75)
+			{
+				soundManager.play('s5');
+			}
+		if (end <= 0)
+		{
+		SCORE = SCORE+150;
+		frogHorizontal = 150;
+		frogVertical = 750;
+		link("gameFinished.html");
+		sessionStorage.transferx3 = speedRun;
+		speedRun= speedRun;
+		}
+		end = end - 1;
+	}
+}
+}
+
+void frogMOVEMENT()
+{
+//FROG DIRECTION
+	//W
+	if (UP == true)
+		{
+				n=1
+				startTu=0;
+				endTu = 5;
+				while(n<=4)
+				{
+					if(timeU >= startTu && timeU <= endTu)
+						{
+							image(frogUp[n],frogHorizontal,frogVertical,50,50);
+						}
+					startTu =startTu+5;
+					endTu = endTu +5;
+					n= n+1;
+					timeU = timeU +0.5;
+						if(timeU >=19.99 )
+						{
+							timeU = 26;
+						} 
+						
+				}
+				if ( timeU> endTu)
+				{
+					image(frogUp[1],frogHorizontal,frogVertical,50,50);
+				}
+		}
+	//S
+	if (DOWN == true)
+		{
+				n=1
+				startTd=0;
+				endTd = 5;
+				while(n<=4)
+				{
+					if(timeD >= startTd && timeD <= endTd)
+						{
+							image(frogDown[n],frogHorizontal,frogVertical,50,50);
+						}
+					startTd =startTd+5;
+					endTd = endTd +5;
+					n= n+1;
+					timeD = timeD +0.5;
+						if(timeD >=19.99 )
+						{
+							timeD = 26;
+						} 
+						
+				}
+				if ( timeD> endTd)
+				{
+					image(frogDown[1],frogHorizontal,frogVertical,50,50);
+				}
+		}
+	//A
+	if (LEFT == true)
+		{
+				n=1
+				startTl=0;
+				endTl = 5;
+				while(n<=4)
+				{
+					if(timeL >= startTl && timeL <= endTl)
+						{
+							image(frogLeft[n],frogHorizontal,frogVertical,50,50);
+						}
+					startTl =startTl+5;
+					endTl = endTl +5;
+					n= n+1;
+					timeL = timeL +0.5;
+						if(timeL >=19.99 )
+						{
+							timeL = 26;
+						} 
+						
+				}
+				if ( timeL> endTl)
+				{
+					image(frogLeft[1],frogHorizontal,frogVertical,50,50);
+				}
+		}
+	//D
+	if (RIGHT == true)
+		{
+
+				n=1
+				startTr=0;
+				endTr = 5;
+				while(n<=4)
+				{
+					if(timeR >= startTr && timeR <= endTr)
+						{
+							image(frogRight[n],frogHorizontal,frogVertical,50,50);
+						}
+					startTr =startTr+5;
+					endTr = endTr +5;
+					n= n+1;
+					timeR = timeR +0.5;
+						if(timeR >=19.99 )
+						{
+							timeR = 26;
+						} 
+						
+				}
+				if ( timeR> endTr)
+				{
+					image(frogRight[1],frogHorizontal,frogVertical,50,50);
+				}
+		}
+
+//DEATH ANIMATION
+	if (dying == true)
+		{
+			image(death,frogHorizontal,frogVertical,50,50);
+			DYING = DYING - 1;
+			
+			if (DYING <= 0)
+				{
+					if (LIVES == 0)
+						{
+							link("gameOver.html");
+						}
+					frogHorizontal = 350;
+					frogVertical   = 750;
+					dying = false;					
+				}			
+		}
+}
+
+void keyPressed()
+{
+	if (dying == false)
+		{
+	//going up
+			if (key == 'w')
+				{	
+					if (frogVertical > 200 && frogVertical < 800)
+						{
+						
+									soundManager.play('s0');
+								}
+					UP    = true; 
+					DOWN  = false;
+					LEFT  = false;
+					RIGHT = false;
+					timeU = 0;
+					frogVertical = frogVertical - 50;				
+				}
+			
+	//going down
+			if (key == 's')
+				{				
+					frogVertical = frogVertical + 50;
+					timeD = 0;
+					if (SCORE < 0)
+						{
+							SCORE = 0;
+						}
+					UP    = false;
+					DOWN  = true;
+					LEFT  = false;
+					RIGHT = false;
+					soundManager.play('s0');
+				}
+		
+	//going left
+			if (key == 'a')
+				{
+					frogHorizontal = frogHorizontal - 50;
+					timeL = 0;
+					UP    = false;
+					DOWN  = false;
+					LEFT  = true;
+					RIGHT = false;
+					soundManager.play('s0');
+				}
+		
+	//going right
+			if (key == 'd')
+				{
+					UP    = false;
+					DOWN  = false;
+					LEFT  = false;
+					RIGHT = true;
+					timeR = 0;
+					soundManager.play('s0');
+					frogHorizontal = frogHorizontal + 50;
+				}
+			
+	//UPPER CASE BECAUSE WE DON'T SUCK	
+			if (key == 'W')
+				{
+					if (frogVertical > 200 && frogVertical < 800)
+						{
+
+							soundManager.play('s0');
+						}
+					UP    = true;
+					DOWN  = false;
+					LEFT  = false;
+					RIGHT = false;
+					frogVertical = frogVertical - 50;
+				}
+			
+			if (key == 'S')
+				{
+
+				
+					frogVertical = frogVertical + 50;
+				
+					if (SCORE < 0)
+						{
+							SCORE = 0;
+						}
+					UP    = false;
+					DOWN  = true;
+					LEFT  = false;
+					RIGHT = false;
+					soundManager.play('s0');
+				}
+		
+			if (key == 'A')
+				{
+					frogHorizontal = frogHorizontal - 50;
+					UP    = false;
+					DOWN  = false;
+					LEFT  = true;
+					RIGHT = false;
+					soundManager.play('s0');
+				}
+			
+			if (key == 'D')
+				{
+					frogHorizontal = frogHorizontal + 50;
+					UP    = false;
+					DOWN  = false;
+					LEFT  = false;
+					RIGHT = true;
+					soundManager.play('s0');
+				}
+	}
+}
+
+</script>
+<canvas id="mycanvas"></canvas>
+</head>
+
+<body>
+
+</body>
+</html>
+
+
+

@@ -1,0 +1,120 @@
+<html>
+<head>
+<title>Main Menu</title>
+<script type="text/javascript" src="SOUND/script/soundmanager2.js"></script>
+<script type="text/javascript" src="SOUND/script/loadsoundchrome.js"></script>
+<center>
+<script src="SETUP/processing-1.4.1.js"></script>
+<script type="text/processing" data-processing-target="mycanvas">
+/* @pjs globalKeyEvents = "true"; */
+
+int music;
+
+void setup ()
+{
+	size(500,500);
+	frameRate(60);
+	
+	orator = loadFont("Orator Std");
+	music = 1;
+}
+
+void draw ()
+{
+	background(0,0,0);
+	
+	//TEXT AT TOP OF SCREEN
+	fill(255,255,255);
+	textFont(orator,50);
+	text("READY TO PLAY?",37,150);
+	
+	//ENTER BUTTON
+	fill(255,255,255);
+	stroke(255,255,255);
+	strokeWeight(3);
+	rect(50,250,150,75);
+	
+	fill(0,0,0);
+	textFont(orator,30);
+	text("YES",93,297);
+	
+	//LEAVE BUTTON
+	fill(255,255,255);
+	stroke(255,255,255);
+	strokeWeight(3);
+	rect(300,250,150,75);
+
+	fill(0,0,0);
+	textFont(orator,30);
+	text("NO",350,297);
+		
+		//notification
+		if (mouseX >=  50 && mouseX <= 200 &&
+			mouseY >= 250 && mouseY <= 325)
+			{
+				fill(0,0,0);
+				stroke(255,255,255);
+				strokeWeight(3);
+				rect(50,250,150,75);
+			
+				fill(255,255,255);
+				textFont(orator,30);
+				text("YES",93,297);
+			}
+	
+		if (mouseX >= 300 && mouseX <= 450 && 
+			mouseY >= 250 && mouseY <= 325)
+			{
+				fill(0,0,0);
+				stroke(255,255,255);
+				strokeWeight(3);
+				rect(300,250,150,75);
+				
+				fill(255,255,255);
+				textFont(orator,30);
+				text("NO",350,297);
+			}
+	
+	//music
+	if (music == 1)
+		{
+			soundManager.play('s6');
+			
+		}
+	 
+	 if (music < 1 )
+	 	{
+	 		
+	 	}
+	 	
+	 music = music - 1;
+
+}
+
+void mousePressed ()
+{
+	if (mouseButton == LEFT)
+		{
+			if (mouseX >=  50 && mouseX <= 200 &&
+				mouseY >= 250 && mouseY <= 325)
+				{
+					link("gameStage1.html");
+				}
+			
+			if (mouseX >= 300 && mouseX <= 450 &&
+				mouseY >= 250 && mouseY <= 325)
+				{
+					link("mainMenu.html");
+				}
+		}
+}
+
+</script>
+<canvas id="mycanvas"></canvas>
+</head>
+
+<body>
+
+</body>
+</html>
+

@@ -1,0 +1,174 @@
+<html>
+<head>
+<titleGAME OVERS</title>
+<script type="text/javascript" src="SOUND/script/soundmanager2.js"></script>
+<script type="text/javascript" src="SOUND/script/loadsoundchrome.js"></script>
+<center>
+<script src="SETUP/processing-1.4.1.js"></script>
+<script type="text/processing" data-processing-target="mycanvas">
+
+/* @pjs globalKeyEvents = "true"; */
+
+int countDown;
+int music;
+
+void setup ()
+{
+	size(500,500);
+	frameRate(60);
+	
+	orator = loadFont("Orator Std");
+	
+	countDown = 5000;
+	music = 1;
+}
+
+void draw ()
+{
+	background(0,0,0);
+	
+	//TITLE
+	fill(255,255,255);
+	textFont(orator,70);;
+	text("GAME OVER",35,100);
+	
+	//RETRY	
+	textFont(orator,40);;
+	text("TRY AGAIN?",135,215);
+	
+	if (music == 1)
+		{
+			soundManager.play('s4');
+			
+		}
+	 
+	 if (music < 1 )
+	 	{
+	 		
+	 	}
+	 	
+	music = music - 1;
+	countDown = countDown - 12.5;
+	
+	//5
+	if (countDown >= 4100)
+	 	{
+	 		fill(255,255,255);
+	 		textFont(orator,40);;
+	 		text("5",235,255);
+	 	}
+	 	
+	 //4
+	if (countDown >= 3100 && countDown <= 4000)
+		{
+	 		fill(255,255,255);
+	 		textFont(orator,40);;
+	 		text("4",235,255);
+	 	}
+	 
+	 //3
+	if (countDown >= 2100 && countDown <= 3000)
+		{
+			fill(255,255,255);
+	 		textFont(orator,40);;
+	 		text("3",235,255);
+		}
+	
+	//2
+	if (countDown >= 1100 && countDown <= 2000)
+		{
+			fill(255,255,255);
+	 		textFont(orator,40);;
+	 		text("2",235,255);
+		}
+	
+	//1	
+	if (countDown >= 100 && countDown <= 1000)
+		{
+			fill(255,255,255);
+	 		textFont(orator,40);;
+	 		text("1",235,255);
+		}
+	
+	//0
+	if (countDown <= 0)
+		{
+			link("mainMenu.html");
+		}
+	
+	//YES BUTTON
+	fill(0,0,0);
+	stroke(255,255,255);
+	strokeWeight(3);
+	rect(50,275,150,75);
+	
+	fill(255,255,255);
+	textFont(orator,30);
+	text("YES",93,322);
+	
+	//NO BUTTON
+	fill(0,0,0);
+	stroke(255,255,255);
+	strokeWeight(3);
+	rect(300,275,150,75);
+	
+	fill(255,255,255);
+	textFont(orator,30);
+	text("NO",350,322);
+	
+		if (mouseX >= 50  && mouseX <= 200 &&
+	 		mouseY >= 275 && mouseY <= 350 )
+	 		{
+	 			fill(255,255,255);
+	 			stroke(255,255,255);
+	 			strokeWeight(3);
+	 			rect(50,275,150,75);
+	 			
+	 			fill(0,0,0);
+	 			textFont(orator,30);
+	 			text("YES",93,322);
+	 			
+	 		}
+	 		
+	 	if (mouseX >= 300 && mouseX <= 450 &&
+	 		mouseY >= 275 && mouseY <= 350 )
+	 		{
+	 			fill(255,255,255);
+	 			stroke(255,255,255);
+	 			strokeWeight(3);
+	 			rect(300,275,150,75);
+	 			
+	 			fill(0,0,0);
+	 			textFont(orator,30);
+	 			text("NO",350,322);
+	 		}
+}
+
+void mousePressed ()
+{
+	if (mouseButton == LEFT)
+		{
+			if (mouseX >= 50  && mouseX <= 200 &&
+	 			mouseY >= 275 && mouseY <= 350 )
+	 			{
+	 				link("gameStage1.html");
+	 			}
+	 			
+	 		if (mouseX >= 300 && mouseX <= 450 &&
+	 			mouseY >= 275 && mouseY <= 350 )
+	 			{
+	 				link("mainMenu.html");
+	 			}
+	 		
+		}
+}
+
+</script>
+<canvas id="mycanvas"></canvas>
+</head>
+
+<body>
+
+</body>
+</html>
+

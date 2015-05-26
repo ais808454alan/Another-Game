@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>Main Menu</title>
+<script type="text/javascript" src="SOUND/script/soundmanager2.js"></script>
+<script type="text/javascript" src="SOUND/script/loadsoundchrome.js"></script>
+<center>
+<script src="SETUP/processing-1.4.1.js"></script>
+<script type="text/processing" data-processing-target="mycanvas">
+/* @pjs globalKeyEvents = "true"; */
+
+
+int redirect;
+int music;
+int speedRun;
+
+void setup ()
+{
+	size(500,500);
+	frameRate(60);
+	
+	orator = loadFont("Orator Std");
+	speedRun = (int)sessionStorage.transferx3;
+	
+	redirect = 300;
+	music = 1;
+}
+
+void draw ()
+{
+	redirect = redirect - 2;
+	
+	background(0,0,0);
+	
+	fill(255,255,255);
+	textFont(orator,55);
+	text("CONGRATULATIONS",5,150);
+	text("YOU WON",137,250);
+	text("Time: "+speedRun,107,350);
+	
+	if (redirect <= 0)
+		{
+			link("mainMenu.html");
+		}
+		
+	if (music == 1)
+		{
+			soundManager.play('s5');
+		}
+	 
+	 if (music < 1 )
+	 	{
+	 		
+	 	}
+	 	
+	 music = music - 1;
+
+
+}
+
+</script>
+<canvas id="mycanvas"></canvas>
+</head>
+
+<body>
+
+</body>
+</html>
+

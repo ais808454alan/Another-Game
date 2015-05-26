@@ -1,0 +1,146 @@
+<html>
+<head>
+<title>Main Menu</title>
+<script type="text/javascript" src="SOUND/script/soundmanager2.js"></script>
+<script type="text/javascript" src="SOUND/script/loadsoundchrome.js"></script>
+<center>
+<script src="SETUP/processing-1.4.1.js"></script>
+<script type="text/processing" data-processing-target="mycanvas">
+/* @pjs globalKeyEvents = "true"; */
+
+//intro page
+int music;
+PImage frogger;
+
+void setup ()
+{
+	size(500,500);
+	frameRate(60);
+	orator = loadFont("Orator Std");
+	
+	music = 1;
+	frogger = loadImage("IMAGE/frogger.jpg");
+}
+
+void draw ()
+{
+	background(0,0,0);
+	fill(255,255,255);
+	stroke(255,255,255);
+	strokeWeight(3);
+	rect(50,70,200,50);
+	rect(50,170,200,50);
+	rect(50,270,200,50);
+	rect(50,370,200,50);
+	fill(0,0,0);
+	textFont(orator,32);
+	text("Start Game",55,105);
+	text("Help",110,205);
+	text("Credit",95,305);
+	text("Exit",110,405);
+	image(frogger,300,100,150,300);
+	
+	//change box colors, notify user of choice
+	
+	if (mouseX >= 50 && mouseX <= 250 &&
+		mouseY >= 70 && mouseY <= 120 )
+		{
+			fill(0,0,0);
+			stroke(255,255,255);
+			strokeWeight(3);
+			rect(50,70,200,50);
+			fill(255,255,255);
+			textFont(orator,32);
+			text("Start Game",55,105);
+		}
+		
+	if (mouseX >= 50  && mouseX <= 250 &&
+		mouseY >= 170 && mouseY <= 220 )
+		{
+			fill(0,0,0);
+			stroke(255,255,255);
+			strokeWeight(3);
+			rect(50,170,200,50);
+			fill(255,255,255);
+			textFont(orator,32);
+			text("Help",110,205)
+		}
+		
+	if (mouseX >= 50  && mouseX <= 250 &&
+		mouseY >= 270 && mouseY <= 320 )
+		{
+			fill(0,0,0);
+			stroke(255,255,255);
+			strokeWeight(3);
+			rect(50,270,200,50);
+			fill(255,255,255);
+			textFont(orator,32);
+			text("Credit",95,305);
+		}
+	
+	if (mouseX >= 50  && mouseX <= 250 &&
+		mouseY >= 370 && mouseY <= 420 )
+		{
+			fill(0,0,0);
+			stroke(255,255,255);
+			strokeWeight(3);
+			rect(50,370,200,50);
+			fill(255,255,255);
+			textFont(orator,32);
+			text("Exit",110,405);
+		}
+			
+	if(mousePressed == true && mouseButton == LEFT) 
+	{
+		//game
+		if(mouseX>50&&mouseX<250 && mouseY>70&&mouseY<120)
+		{
+		link("start_exit.html")
+		}
+		
+		//help
+		if(mouseX>50&&mouseX<250 && mouseY>170&&mouseY<220)
+		{
+		link("help.html")
+		}
+		
+		//credit
+		if(mouseX>50&&mouseX<250 && mouseY>270&&mouseY<320)
+		{
+		link("credit.html")
+		}
+		
+		//exit
+		if(mouseX>50&&mouseX<250 && mouseY>370&&mouseY<420)
+		{
+		link("intro.html")
+		}
+	}
+	
+	//music	
+	 if (music == 1)
+		{
+			soundManager.play('s3');
+			
+		}
+	 
+	 if (music < 1 )
+	 	{
+	 		
+	 	}
+	 	
+	 music = music - 1;
+
+	
+
+	
+}
+
+</script>
+<canvas id="mycanvas"></canvas>
+</head>
+
+<body>
+
+</body>
+</html>
